@@ -5,7 +5,6 @@ import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.context.annotation.Scope;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.util.ClassUtils;
 
 /**
  * Please note, create this service using new operator.
@@ -33,16 +32,11 @@ public class DefaultRegistrationService implements RegistrationService {
 		
 		if(credentialsPolicy.alwaysGenerateOnRegistration()) {
 			if(passwordGenerator == null) {
-				String passwordGeneratorTypeName =
+				Class<PasswordGenerator> passwordGeneratorType =
 						credentialsPolicy.defaultPasswordGeneratorType();
-
-				@SuppressWarnings("unchecked")
-				Class<PasswordGenerator> passwordGeneratorType = (Class<PasswordGenerator>)
-						ClassUtils.forName(
-								passwordGeneratorTypeName, 
-								DefaultRegistrationService.class.getClassLoader());
 				
-				passwordGenerator = passwordGeneratorType.newInstance();
+				passwordGenerator = passwordGeneratorType
+						.newInstance();
 			}
 			password = passwordGenerator.generate();
 		}

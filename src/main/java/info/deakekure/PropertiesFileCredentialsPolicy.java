@@ -8,8 +8,8 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 /**
- * Sample {@link CredentialsPolicy} which read data from properties.file (Using
- * Spring's {@link PropertySource}).
+ * Sample {@link CredentialsPolicy} implementation which read policy items from
+ * properties.file (In conjunction with Spring's {@link PropertySource}).
  * 
  * @author zakyalvan
  */
@@ -21,7 +21,7 @@ public class PropertiesFileCredentialsPolicy implements CredentialsPolicy {
 	private boolean alwaysGenerateOnRegistration;
 	
 	@Value("${info.deakekure.credential.defaultPasswordGeneratorName}")
-	private String passwordGeneratorType;
+	private Class<PasswordGenerator> passwordGeneratorType;
 	
 	@Override
 	public boolean alwaysGenerateOnRegistration() {
@@ -29,7 +29,7 @@ public class PropertiesFileCredentialsPolicy implements CredentialsPolicy {
 	}
 
 	@Override
-	public String defaultPasswordGeneratorType() {
+	public Class<PasswordGenerator> defaultPasswordGeneratorType() {
 		return passwordGeneratorType;
 	}
 }
